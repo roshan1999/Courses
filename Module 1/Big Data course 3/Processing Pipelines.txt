@@ -1,0 +1,19 @@
+et's discuss this for our simplified advanced stream
+data from an online game example. In this case, your event gets ingested through a real time big data ingestion
+engine, like Kafka or Flume. Then they get passed into
+a Streaming Data Platform for processing like Samza,
+Storm or Spark streaming. This is a valid choice for processing
+data one event at a time or chunking the data into Windows or Microbatches
+of time or other features. Any pipeline processing of data can
+be applied to the streaming data here as we wrote in a batch-
+processing Big Data engine. The process stream data can then be
+served through a real-time view or a batch-processing view. Real-time view is often subject to change
+as potentially delayed new data comes in. The storage of the data can be
+accomplished using H-Base, Cassandra, HDFS, or
+many other persistent storage systems. To summarize, big data pipelines
+get created to process data through an aggregated set of steps that
+can be represented with the split- do-merge pattern with
+data parallel scalability. This pattern can be
+applied to many batch and streaming data processing applications. Next we will go through some processing
+steps in a big data pipeline in more detail, first conceptually,
+then practically in Spark.

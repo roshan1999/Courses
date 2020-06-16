@@ -1,0 +1,70 @@
+Big Data Processing Pipelines:
+A Dataflow Approach. Most big data applications
+are composed of a set of operations executed one after another as a pipeline. Data flows through these operations, going through various
+transformations along the way. We also call this dataflow graphs. So to understand big data
+processing we should start by understanding what dataflow means. After this video you will be able to
+summarize what dataflow means and it's role in data science. Explain split->do->merge as a big
+data pipeline with examples, and define the term data parallel. Let's consider the hello
+world MapReduce example for WordCount which reads one or
+more text files and counts the number of occurrences
+of each word in these text files. You are by now very familiar with
+this example, but as a reminder, the output will be a text
+file with a list of words and their occurrence frequencies
+in the input data. In this application,
+the files were first split into HDFS cluster nodes as partitions of
+the same file or multiple files. Then a map operation, in this case, a user defined function to count words
+was executed on each of these nodes. And all the key values that were output
+from map were sorted based on the key. And the key values with the same word
+were moved or shuffled to the same node. Finally, the reduce operation
+was executed on these nodes to add the values for
+key-value pairs with the same keys. If you look back at this example, we see
+that there were four distinct steps, namely the data split step,
+the map step, the shuffle and sort step, and the reduce step. Although, the word count
+example is pretty simple it represents a large number of
+applications that these three steps can be applied to achieve
+data parallel scalability. We refer in general to this
+pattern as "split-do-merge". In these applications, data flows
+through a number of steps, going through transformations with various scalability
+needs, leading to a final product. The data first gets partitioned. The split data goes through a set of
+user-defined functions to do something, ranging from statistical operations to
+data joins to machine learning functions. Depending on the application's
+data processing needs, these "do something" operations can
+differ and can be chained together. In the end results can be combined
+using a merging algorithm or a higher-order function like reduce. We call the stitched-together
+version of these sets of steps for big data processing "big data pipelines". The term pipe comes from
+a UNIX separation that the output of one running program gets
+piped into the next program as an input. As you might imagine,
+one can string multiple programs together to make longer pipelines with various
+scalability needs at each step. However, for big data processing, the parallelism of each step in
+the pipeline is mainly data parallelism. We can simply define data parallelism
+as running the same functions simultaneously for the elements or
+partitions of a dataset on multiple cores. For example,
+in our word count example, data parallelism occurs in every
+step of the pipeline. There's definitely parallelization
+during map over the input as each partition gets
+processed as a line at a time. To achieve this type of data parallelism, we must decide on the data granularity
+of each parallel computation. In this case, it is a line. We also see a parallel grouping of
+data in the shuffle and sort phase. This time, the parallelization is
+over the intermediate products, that is, the individual key-value pairs. And after the grouping of
+the intermediate products the reduce step gets parallelized
+to construct one output file. You have probably noticed that
+the data gets reduced to a smaller set at each step. Although, the example we have given is for batch processing, similar techniques
+apply to stream processing. Let's discuss this for our simplified advanced stream
+data from an online game example. In this case, your event gets ingested through a real time big data ingestion
+engine, like Kafka or Flume. Then they get passed into
+a Streaming Data Platform for processing like Samza,
+Storm or Spark streaming. This is a valid choice for processing
+data one event at a time or chunking the data into Windows or Microbatches
+of time or other features. Any pipeline processing of data can
+be applied to the streaming data here as we wrote in a batch-
+processing Big Data engine. The process stream data can then be
+served through a real-time view or a batch-processing view. Real-time view is often subject to change
+as potentially delayed new data comes in. The storage of the data can be
+accomplished using H-Base, Cassandra, HDFS, or
+many other persistent storage systems. To summarize, big data pipelines
+get created to process data through an aggregated set of steps that
+can be represented with the split- do-merge pattern with
+data parallel scalability. This pattern can be
+applied to many batch and streaming data processing applications. Next we will go through some processing
+steps in a big data pipeline in more detail, first conceptually,
+then practically in Spark.

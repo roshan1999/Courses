@@ -1,0 +1,126 @@
+userID:             sessionID:             timestamp:                              clickedPoint:            missionID:            isHit:               ScoreTally
+long(PK)           long(PK)               dateTime                                 coordinate               long                      string               long
+----------             --------------            --------------------------                -----------------            ---------------           ------------          ---------------
+100                   4356                     10/12/2015::14:15:09             (4,8)                         13                         yes                   8
+101                   3241                     10/23/2015::14:15:19             (20,5)                       18                         no                     4
+102                   4537                     11/4/2015::14:15:20               (17,43)                      21                        no                     6
+
+Note : It is not advisable to have only the userID as Primary key(PK) as it is possible (as seen in the below questions) that there could be users that can host multiple sessions. Because of this, we use a 2 primary key system.
+
+This implies that neither of them alone are unique, but infact together are unique.
+That is, the below userID , sessionID values are valid:
+
+userID               sessionID
+100                    4356
+100                    4357
+101                    4356
+100                    4356 (-> only this tuple is NOT VALID as this data is already entered).
+
+
+
+
+Node:
+NodeID      Node
+1                ChatSession
+2.               ChatText
+3                User
+
+NOTE THE CHANGE IN THE NODE IT's NOT THE SAME AS THE ORDER OF THE GRAPH (to avoid plagarism)
+Edge:
+
+SrcNodeID         DestNodeID        EdgeProperty
+3                         1                          starts
+3                         1                          joins
+3                         1                          leaves
+1                         2                          contains
+3                         2                          writes
+2                         3                          mentions
+
+
+1. Which teams are having more conversations?
+
+We use the edge "write" from the source node "User" and destination node "ChatText"Query:
+Count total writes of all users. (this takes into account various chat sessions the user may have participated in and is not restricted to one chat session).
+
+2. Do users chat more (or less) before they leave a team?
+
+To identify this we need to create a community. Once a community is created since it acts as a component graph,    we need not perform query searching among the components, instead it can be done within the component itself.
+
+1. we need to find which user has left the team:
+- the query to get the user id of all users that left a team would then be:
+select userID,joiningDate from Teams where a single user id has multiple team id (Will need to use a group by function for such a case).
+
+2. Find the teamID in which the joining Date is previous to the most recent joiningdate.
+
+3. Using the teamID(or teamIDs) and the userID we shall now aggregate the number of chatText written by the user.
+Since we are considering only the teams previous to the recent joining date, this aggregate would consider only those teams and their messages.
+
+4. For comparison, we shall also take the current team the user is in, and aggregate the number of messages the user has written. This comparison is not accurate as it is subject to the user's joiningDate and number of sessions, but for the purpose of this assignment, this will suffice.
+
+5. Subtract the average of all the messages before leaving a team with the average of the current number of messages after joining a team to be able to say whether the user chats more or less before they leave a team
+
+6. Since, this shall be done as queries, it would be done simultaneously and finally, one need only perform an aggregate sum function to find whether this value is positive(more) or negative(less)
+
+3. What are the dominant terms (words) used in a chat session within a specific time period?
+
+Using the graph we create a table (for Session s SessionTable) in which we record every chat session and it's first user's joining timestamp and last user's leaving timestamp. We need to have a primary key (sessionID) which would link to the graph using a foreign key.
+
+Using the table for Session,we first find (using select) the chatSession that occured in between the specified time period and then use the graph tofirst seperate those chatText where the source node is the chatSession and destNodeID is chatText.
+
+The edge is "contains" and we use this to take all the chatText in a particular session.
+
+Once we have the chatText, we create a document vector where each chatsession will represent a single document and apply TF-IDF vectorization algorithm, to get the frequency of usage of each word in the document (or chatSession).
+
+The words with maximum frequency are the dominant terms (words) used in a chat session within a specific time period
+
+4. Which users are most active in a specific chat session?
+
+Using the graph, we find the users in the specific chat session.
+
+Once we have the users in the chatSession we aggregate(sum) the number of chatText written by the user
+(Assuming every chatText determines the activness of the user).
+
+We find the Maximum of the aggregate for the most active user(or users if maximum is repeated).
+
+5. How many chat sessions is a user participating in at the same time?
+
+Using the graph, we see that there are 2 edge properties which specifies the join and leave timestamp.
+We shall use this.
+
+We use a query to count all the chat sessions for a user within each "ChatSessions" join and leave timestamp (or simply join timestamp for those "ChatSessions" that are still ongoing).
+
+The count would indicate the number of "ChatSessions" the user participates (or participated) in at the same time.
+
+
+Explain how you might extend the tree with at least five specific flamingo properties. For example, beak-color whose values might be “bright-red” or “pink”.
+
+
+To extend a tree with atleast 5 specific flamingo properties(mentioned later) we would have to first use a optimized algorithm to locate to the node that describes the flamingo sub-type to which the property belongs. Using the structure of the tree shown above the tree would be extended as:
+
+root->flamingos->flamingo-type(type of flamingo)->flamingo-subtype(subtype of flamingo)->flamingo-property(property of flamingo for ex: beak color) -> subproperty 1 (for ex:Bright-red)
+                              -> subproperty 2(for ex: pink)
+
+
+Hence we first perform a traversal algorithm to reach the end of the tree at node "flamingo-subtype"(at the rightmost node depending on the flamingo type).
+
+Once we reach this node, we check whether the property already exists before inserting:
+
+1. Case 1:  -> if the property already exists:
+- check if the sub-property exists.
+- if it doesn't exist then create a node and add the sub-property     else ignore (or generate message "Already inserted")
+2. Case 2: - - if property doesn't exist:
+   - Add the Property
+   - add the sub-property (or sub-properties) to the tree.
+
+So for the example, once the pointer is traversed to the node sub-type, we do a check for beak-color property whether it already exists,  if it does exist, then we increment the pointer to the node beak-color and check for the sub-property bright-red  if it doesn't exist then add, else ignore.  similarly we check for pink if beak-color doesn't already exist at sub-type node, then add it and further add its colors as nodes bright-red and pink.
+
+The process is same for the properties few of which (>5) have been mentioned below:
+1. FlamingoID (int) Ex: 189
+2. FlamingoSpecies (string) : Ex: Phoeniconaias minor
+3. FlamingoName (string) : Ex: Lesser Flamingo
+4. FlamingoHeight (float,in cm) : Ex: 80
+5. FlamingoLifeSpan (float, in years) : Ex: 32
+6. FlamingoWingLength (float, in cm) :Ex: 90
+7. FlamingoPopulation (long) : 2000000
+8. FlamingoScore (int) : 3
+...etc

@@ -1,0 +1,55 @@
+The reduce operation helps you then
+to collectively apply the same process to objects of similar nature. For example, when you want to add your
+monthly spending in different categories, like grocery, fuel, and dining out,
+the reduce operation is very useful. In our figure here on the top left, we see that data sets in
+grey with the same color are keys grouped together
+using a reduced function. Reds together, blues together,
+and yellows together. It would be a good idea to check out
+the Spark word count hands-on to see how map and reduce can be used
+effectively for getting things done. Map and reduce are types of
+transformations that work on a single list of key and data pairings just
+like we see on the left of our figure. Now let's consider a scenario where
+we have two data sets identified by the same keys just like the two
+sets and colors in our diagram. Many operations have such needs where
+we have to look at all the pairings of all key value pairs,
+just like crossing two matrices. For a practical example
+Imagine you have two teams, a sales team with two people, and
+an operations team with four people. In an event you would want each
+person to meet every other person. In this case, a cross product, or a cartesian product, becomes a good
+choice for organizing the event and sharing each pairs' meeting location and
+travel time to them. In a cross or cartesian product operation,
+each data partition gets paired with all other data partitions,
+regardless of its key. This sometimes gets
+referred to as all pairs. Now add to the cross product by
+just grouping together the data partitions with the same key,
+just like the red data. And the yellow data partitions here. This is a typical match or join operation. As we see in the figure here, match
+is very similar to the cross product, except that it is more
+selective in forming pairs. Every pair must have something in common. This something in common is
+usually referred to as a key. For example,
+each person in your operations team and sales team is assigned
+to a different product. You only want those people to meet
+who are working on the same product. In this case your key is product. And you can perform and
+match operation and send e-mails to those people
+who share a common product. The number of e-mails is likely to be less
+than when you performed a cartesian or a cross product, therefore reducing
+the cost of the operation. In a match operation, only the keys
+with data in both sets get joined, and become a part of the final
+output of the transformation. Now let's consider listing
+the data sets with all the keys, even if they don't exist in both sets. Consider a scenario where you
+want to do brainstorming sessions of people from operations and sales, and get people who work on the same
+products in the same rooms. A co-group operation will do this for you. You give it a product name
+as they key to work with and the two tables, the sales team and
+operations team. The co-group will create groups
+which contain team members working on common products even if a
+product doesn't exist in one of the sets. The last operation we will
+see is the filter operation. Filter works much like a test where only elements that pass
+a test are shown in the output. Consider as a set that contains teams and
+a number of members in their teams. If your game requires people to pair up, you may want to select teams which
+have an even number of members. In this case, you can create a test
+that only passes the teams which have an even number of team members shown as
+divided by 2 with 0 in the remainder. The real effectiveness of the basic
+transformation we saw here is in pipelining them in a way that
+helps you to solve your specific problem just as you would perform
+a series of tasks on a real block of wood to make a fine piece of
+woodwork that you can use to steer your ship, which in this case is
+your business or research.

@@ -1,0 +1,29 @@
+By the end of this course you will be able to...
+
+1. Describe the Big Data landscape including examples of real world big data problems and approaches.
+2. Identify the high level components in the data science lifecycle and associated data flow.
+3. Explain the V’s of Big Data and why each impacts the collection, monitoring, storage, analysis and reporting, including their impact in the presence of multiple V’s.
+4. Identify big data problems and be able to recast problems as data science questions.
+5. Summarize the features and significance of the HDFS file system and the MapReduce programming model and how they relate to working with Big Data.
+
+WHY BIG DATA?
+- What launched in the big data era?
+    - Objective:
+    1. Describe how the torrent of growing data and on demand computing has launched the Data Science field.
+- What makes big data valuable?
+  - Objective:
+    2. Describe examples from fields where big data has enabled better models which allows for higher
+    precision recommendations or solutions to make the world a better place.
+      Examples:
+      1. Big data allows us to build better models, which produce higher precision results.
+        - We are witnessing hugely innovative approaches in how companies market themselves and sell products.
+          How human resources are managed. How disasters are responded to.
+          And many other applications that evidenced based data is being used to influence decisions.
+      2. Big Data has enabled personalized Marketing
+        - Big data enables you to hear the voice of each consumer as opposed to consumers at large.
+        - The companies track our usage of the services provided by the company (mainly online websites) to target customers.
+        How do the companies use this data and where?
+          - Recommendation Engine : One area we are all familiar with are the recommendation engines.
+            These engines leverage user patterns and product features to predict best match product for enriching the user experience.
+          - Sentiment Analysis : Analysis of the feelings around events and products. \
+      3. Mobile Advertising
